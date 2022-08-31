@@ -1,6 +1,5 @@
 import Head from 'next/head'
-import Header from '@components/Header'
-import Footer from '@components/Footer'
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -11,13 +10,23 @@ export default function Home() {
       </Head>
 
       <main>
-        <Header title="Welcome to my app!" />
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
-      </main>
+        <h1>Homepage</h1>
+        
+        <Link href='/pages/tyler'>
+          Go to Tyler page
+        </Link>
+        <Link href='/pages/aaron'>
+          Go to Aaron page
+        </Link>
+        <Link href='/pages/jason'>
+          Go to Jason page
+        </Link>
 
-      <Footer />
+        <Link href='/asdf'>
+          Go to dead page
+        </Link>
+    
+      </main>
     </div>
   )
 }
