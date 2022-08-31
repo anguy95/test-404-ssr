@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-export default function Home() {
+export default function Home(props) {
   return (
     <div className="container">
       <Head>
@@ -10,6 +10,11 @@ export default function Home() {
       </Head>
 
       <main>
+        {
+          props.preview && 
+          <h3>In Preview</h3>
+        }
+
         <h1>Homepage</h1>
         
         <Link href='/pages/tyler'>

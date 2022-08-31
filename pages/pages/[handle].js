@@ -21,7 +21,7 @@ const pages = {
 }
 
 async function getPages() {
-  await new Promise(r => setTimeout(r, 5000));
+  await new Promise(r => setTimeout(r, 2000));
 
   return Object.values(pages);
 }
@@ -53,15 +53,16 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  console.log('==== called gsProps', context.params.handle);
+  console.log('==== called gsProps', context, context.params.handle);
   const page = pages[context.params.handle];
 
   return {
-    props: {...page}, // will be passed to the page component as props
+    props: {...page, preview: !!context.preview}, // will be passed to the page component as props
   }
 }
 
 export default function Page(props) {
+  console.log('==== page props', props); 
 
   return (
     <div className="container">
@@ -71,6 +72,11 @@ export default function Page(props) {
       </Head>
 
       <main>
+        {
+          props.preview && 
+          <h3>In Preview</h3>
+        }
+
         <h1>{props.description}</h1>
 
         <Link href='/'>
