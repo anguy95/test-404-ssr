@@ -1,7 +1,21 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-export default function FourZeroFour() {
+export async function getStaticProps(context) {
+  console.log('==== called gsProps', context );
+
+  return {
+    props: {  
+      handle: 'tyler',
+      title: 'Tyler', 
+      preview: !!context.preview, // will be passed to the page component as props
+    }
+  }
+}
+
+export default function FourZeroFour(props) {
+  console.log('==== page props', props); 
+
   return (
     <div className="container">
       <Head>
@@ -10,6 +24,10 @@ export default function FourZeroFour() {
       </Head>
 
       <main>
+        {
+          props.preview && 
+          <h3>In Preview</h3>
+        }
         <h1> Oops, can't find what you're looking for.</h1>
     
         <Link href='/'>
