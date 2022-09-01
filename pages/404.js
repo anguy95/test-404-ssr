@@ -4,6 +4,14 @@ import Link from 'next/link'
 export async function getStaticProps(context) {
   console.log('==== called gsProps', context );
 
+  if (!!context.preview) {
+    return {
+      redirect: {
+        destination: '/pages/tyler'
+      }
+    }
+  }
+
   return {
     revalidate: 1,
     props: {  
