@@ -29,7 +29,7 @@ export default function FourZeroFour(props) {
           props.preview && 
           <h3>In Preview</h3>
         }
-        <h1> Oops, can't find what you're looking for.</h1>
+        <h1> Oops, cant find what youre looking for.</h1>
     
         <Link href='/'>
           Go to home
