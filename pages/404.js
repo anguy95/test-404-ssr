@@ -6,8 +6,8 @@ export async function getStaticProps(context) {
 
   return {
     props: {  
-      handle: 'tyler',
-      title: 'Tyler', 
+      handle: '404',
+      title: 'Oops, not found', 
       preview: !!context.preview, // will be passed to the page component as props
     }
   }
