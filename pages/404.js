@@ -8,8 +8,7 @@ export async function getStaticProps(context) {
     props: {  
       handle: '404',
       title: 'Oops, not found', 
-      // preview: !!context.preview, // will be passed to the page component as props
-      preview: true,
+      preview: !!context.preview, // will be passed to the page component as props
       ah: Math.random()
     }
   }
