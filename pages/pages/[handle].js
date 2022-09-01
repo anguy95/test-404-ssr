@@ -1,71 +1,56 @@
-import Head from 'next/head'
-import Link from 'next/link'
+import Head from "next/head";
+import Link from "next/link";
 
-
-const pages = {
-  tyler: {
-    handle: 'tyler',
-    title: 'Tyler',
-    description: 'I like apples!'
-  },
-  jason: {
-    handle: 'jason',
-    title: 'Jason',
-    description: 'I like oranges!'
-  },
-  aaron: {
-    handle: 'aaron',
-    title: 'Aaron',
-    description: 'I like grapes!'
-  },
-}
-
-async function getPages() {
-  await new Promise(r => setTimeout(r, 2000));
-
-  return Object.values(pages);
-}
+import {getPages, getPage} from '../../content-api';
 
 export async function getStaticPaths() {
-  console.log('==== called gsPaths from page');
   // Call an external API endpoint to get posts
-  const pages = await getPages()
+  const pages = await getPages();
 
-  // Get the paths we want to prerender based on posts
-  // In production environments, prerender all pages
-  // (slower builds, but faster initial page load)
   const paths = pages.map((page) => ({
     params: { handle: page.handle },
-  }))
+  }));
 
-  // { fallback: false } means other routes should 404
-  return { paths, fallback: 'blocking' }
+  // We want to always fallback to blocking because
+  // we can't 404 immediately with fallback false
+  // as we need to always run through the GSProps
+  // due to us needing to manually determining how
+  // to route to a 404 page if in preview or not
+  // because of a Netlify issue and how it serves
+  // the 404
+  return { paths, fallback: "blocking" };
 }
 
 export async function getStaticProps(context) {
-  console.log('==== called gsProps page', context, context.params.handle);
-  const page = pages[context.params.handle];
+  const page = await getPage(context.params.handle);
 
+  // If we have no coresponding page from this handle
+  // we should 404
   if (!page) {
+    // Because Netlify will always serve the 404
+    // from the CDN even in preview mode, we have
+    // to have a hack route when in preview mode
+    // to render a buildable 404 route in the
+    // customizer
     if (!!context.preview) {
       return {
         redirect: {
-          destination: '/not-found'
-        }
-      }
+          destination: "/not-found",
+        },
+      };
     }
 
-    return { notFound: true }
+    // If we aren't in preview mode, we should just
+    // redirect them to the 404 page
+    return { notFound: true };
   }
 
   return {
-    props: {...page, preview: !!context.preview}, // will be passed to the page component as props
-  }
+    props: { ...page, preview: !!context.preview }, // will be passed to the page component as props
+  };
 }
 
 export default function Page(props) {
-  console.log('==== page props', props); 
-
   return (
     <div className="container">
       <Head>
@@ -74,17 +59,14 @@ export default function Page(props) {
       </Head>
 
       <main>
-        {
-          props.preview && 
-          <h3>In Preview</h3>
-        }
+        {props.preview && <h3>In Preview</h3>}
 
-        <h1>{props.description}</h1>
+        <pre>Page Template</pre>
+        <h1>{props.title}</h1>
+        <h2>{props.description}</h2>
 
-        <Link href='/'>
-          Go to home
-        </Link>
+        <Link href="/">Go to home</Link>
       </main>
     </div>
-  )
+  );
 }
