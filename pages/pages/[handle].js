@@ -49,7 +49,7 @@ export async function getStaticPaths() {
   }))
 
   // { fallback: false } means other routes should 404
-  return { paths, fallback: true }
+  return { paths, fallback: blocking }
 }
 
 export async function getStaticProps(context) {
@@ -57,6 +57,14 @@ export async function getStaticProps(context) {
   const page = pages[context.params.handle];
 
   if (!page) {
+    if (!!context.preview) {
+      return {
+        redirect: {
+          destination: '/pages/tyler'
+        }
+      }
+    }
+
     return { notFound: true }
   }
 
