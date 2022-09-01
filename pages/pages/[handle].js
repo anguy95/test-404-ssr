@@ -57,7 +57,7 @@ export async function getStaticProps(context) {
   const page = pages[context.params.handle];
 
   if (!page) {
-    return { notFound: true, revalidate: 1 }
+    return { notFound: true }
   }
 
   return {

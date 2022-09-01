@@ -5,6 +5,7 @@ export async function getStaticProps(context) {
   console.log('==== called gsProps', context );
 
   return {
+    revalidate: 1,
     props: {  
       handle: '404',
       title: 'Oops, not found', 
