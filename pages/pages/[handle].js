@@ -27,17 +27,7 @@ async function getPages() {
 }
 
 export async function getStaticPaths() {
-  // // When this is true (in preview environments) don't
-  // // prerender any static pages
-  // // (faster builds, but slower initial page load)
-  // if (process.env.SKIP_BUILD_STATIC_GENERATION) {
-  //   return {
-  //     paths: [],
-  //     fallback: 'blocking',
-  //   }
-  // }
-
-  console.log('==== called gsPaths');
+  console.log('==== called gsPaths from page');
   // Call an external API endpoint to get posts
   const pages = await getPages()
 
@@ -53,14 +43,14 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  console.log('==== called gsProps', context, context.params.handle);
+  console.log('==== called gsProps page', context, context.params.handle);
   const page = pages[context.params.handle];
 
   if (!page) {
     if (!!context.preview) {
       return {
         redirect: {
-          destination: '/pages/tyler'
+          destination: '/not-found'
         }
       }
     }
