@@ -56,6 +56,10 @@ export async function getStaticProps(context) {
   console.log('==== called gsProps', context, context.params.handle);
   const page = pages[context.params.handle];
 
+  if (!page) {
+    return { notFound: true }
+  }
+
   return {
     props: {...page, preview: !!context.preview}, // will be passed to the page component as props
   }
